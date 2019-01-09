@@ -14,7 +14,7 @@ bot.on('text', function (msg) {
     }
 
     if (messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') != -1) {
-        bot.sendMessage(messageChatId, 'Для получения картинки по запросу введите \'/IMG ваш запрос\'. Чтобы перевести гривны в другую валюту по курсу НБУ на текущий день, введите команду \'/convert сумма код валюты\', где сумма - целое число в гривне, код валюты - трехсимвольная аббревиатура, например EUR для евро, USD для доллара');
+        bot.sendMessage(messageChatId, 'Для получения картинки по запросу введите \'/IMG ваш запрос\'. Для получения видео с Youtube по запросу введите \'/VIDEO ваш запрос\'. Чтобы перевести гривны в другую валюту по курсу НБУ на текущий день, введите команду \'/convert сумма код валюты\', где сумма - целое число в гривне, код валюты - трехсимвольная аббревиатура, например EUR для евро, USD для доллара');
         return;
     }
 
@@ -144,7 +144,10 @@ bot.on('text', function (msg) {
         let videoSearch = require('youtube-search');
 
         videoSearch(videoQuery, videoOpts, function (err, results) {
-            if (err) return console.log(err);
+            if (err) {
+                console.log(err);
+                bot.sendMessage(messageChatId, 'Ой, что-то пошло не так. Повторите запрос');
+            }
             let videoURL = 'https://youtu.be/' + results[Math.floor(Math.random() * (10 - 1)) + 1].id;
             bot.sendMessage(messageChatId, videoURL);
             console.log(videoQuery + ' ' + videoURL);
