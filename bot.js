@@ -9,7 +9,7 @@ bot.on('text', function (msg) {
     var messageChatId = msg.chat.id;
     var messageText = msg.text;
     if (messageText === '/start') {
-        bot.sendMessage(messageChatId, 'Ну, здравствуй');
+        bot.sendMessage(messageChatId, 'Hello there! For more info, input /help');
     }
 
     if (!isNaN(messageText)) {
@@ -141,7 +141,9 @@ bot.on('text', function (msg) {
         }
     }
     
-    if(messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') )
+    if(messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') != -1 ) {
+                bot.sendMessage(messageChatId, 'Для получения картинки по запросу введите \'/IMG ваш запрос\'. Чтобы перевести гривны в другую валюту по курсу НБУ на текущий день, введите команду \'/convert сумма код валюты\', где сумма - целое число в гривне, код валюты - трехсимвольная аббревиатура, например EUR для евро, USD для доллара');
+    }
 });
 
 let exchange = (sum, currency) => {
