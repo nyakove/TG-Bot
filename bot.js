@@ -148,7 +148,15 @@ bot.on('text', function (msg) {
                 console.log(err);
                 bot.sendMessage(messageChatId, 'Ой, что-то пошло не так. Повторите запрос');
             }
-            let videoURL = 'https://youtu.be/' + results[Math.floor(Math.random() * (10 - 1)) + 1].id;
+
+            if (results[0].kind != 'youtube#video') {
+                let videoURL = 'https://youtu.be/' + results[1].id;
+                bot.sendMessage(messageChatId, videoURL);
+                console.log(videoQuery + ' ' + videoURL);
+                return;
+            }
+
+            let videoURL = 'https://youtu.be/' + results[0].id;
             bot.sendMessage(messageChatId, videoURL);
             console.log(videoQuery + ' ' + videoURL);
         });
