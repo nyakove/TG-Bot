@@ -8,8 +8,14 @@ let bot = new TelegramBot(TOKEN, botOptions);
 bot.on('text', function (msg) {
     var messageChatId = msg.chat.id;
     var messageText = msg.text;
+
     if (messageText === '/start') {
         bot.sendMessage(messageChatId, 'Hello there! For more info, input /help');
+    }
+
+    if (messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') != -1) {
+        bot.sendMessage(messageChatId, 'Для получения картинки по запросу введите \'/IMG ваш запрос\'. Чтобы перевести гривны в другую валюту по курсу НБУ на текущий день, введите команду \'/convert сумма код валюты\', где сумма - целое число в гривне, код валюты - трехсимвольная аббревиатура, например EUR для евро, USD для доллара');
+        return;
     }
 
     if (!isNaN(messageText)) {
@@ -45,7 +51,6 @@ bot.on('text', function (msg) {
 
         const req = https.request(options, (res) => {
             console.log('statusCode:', res.statusCode);
-            //console.log('headers:', res.headers);
 
             res.on('data', (d) => {
                 let resp = JSON.parse(d);
@@ -68,7 +73,6 @@ bot.on('text', function (msg) {
         });
 
         req.end();
-
     }
 
     if (messageText.indexOf('/img') == 0) {
@@ -94,10 +98,6 @@ bot.on('text', function (msg) {
 
                 let htmlPage = binary.toString('ascii');
 
-                /*                fs.writeFile('test.html', htmlPage, function () {
-                                    console.log('test write file')
-                                });*/
-
                 let arr = htmlPage.match(/https:\/\/encrypted-tbn0\.gstatic\.com\/images\?q=tbn:[\w-]{63,64}/g);
                 console.log('Search successful');
                 let imageURL = (Math.random() * (arr.length - 2)).toFixed();
@@ -107,12 +107,9 @@ bot.on('text', function (msg) {
 
             });
         });
-
-
     }
 
     if (messageText.indexOf('/IMG') == 0 && messageText.length > 5) {
-        //const fs = require("fs");
         const gis = require('g-i-s');
         var searchQuery = messageText.slice(5).replace(/\s/g, '+')
 
@@ -120,7 +117,7 @@ bot.on('text', function (msg) {
             searchTerm: searchQuery,
             queryStringAddition: '&biw=1440&bih=789'
         };
-        
+
         gis(searchOpts, logResults);
 
         function logResults(error, results) {
@@ -128,22 +125,32 @@ bot.on('text', function (msg) {
                 console.log(error);
                 bot.sendMessage(messageChatId, 'Ой, что-то пошло не так. Повторите запрос');
             } else {
-                //console.log(JSON.stringify(results, null, '  '));
-
-/*                fs.writeFile('test.txt', JSON.stringify(results), function () {
-                    console.log('Saved!')
-                });*/
-
                 let imgURL = Math.floor(Math.random() * (40 - 1)) + 1;
                 bot.sendPhoto(messageChatId, results[imgURL].url);
-                console.log(messageChatId + ' ' +searchQuery);
+                console.log(messageChatId + ' ' + messageText.slice(5));
             }
         }
     }
-    
-    if(messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') != -1 ) {
-                bot.sendMessage(messageChatId, 'Для получения картинки по запросу введите \'/IMG ваш запрос\'. Чтобы перевести гривны в другую валюту по курсу НБУ на текущий день, введите команду \'/convert сумма код валюты\', где сумма - целое число в гривне, код валюты - трехсимвольная аббревиатура, например EUR для евро, USD для доллара');
+
+    if (messageText.indexOf('/VIDEO') == 0 && messageText.length > 7) {
+
+        let videoQuery = messageText.slice(7);
+
+        var videoOpts = {
+            maxResults: 10,
+            key: 'AIzaSyAPE06HkAar4Cj751xJ0nGsVUwhj_sOSaY'
+        };
+
+        let videoSearch = require('youtube-search');
+
+        videoSearch(videoQuery, videoOpts, function (err, results) {
+            if (err) return console.log(err);
+            let videoURL = 'https://youtu.be/' + results[Math.floor(Math.random() * (10 - 1)) + 1].id;
+            bot.sendMessage(messageChatId, videoURL);
+            console.log(videoQuery + ' ' + videoURL);
+        });
     }
+
 });
 
 let exchange = (sum, currency) => {
