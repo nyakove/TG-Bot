@@ -140,6 +140,8 @@ bot.on('text', function (msg) {
             }
         }
     }
+    
+    if(messageText == '/help' || messageText == '/help' || messageText.indexOf('/help') )
 });
 
 let exchange = (sum, currency) => {
