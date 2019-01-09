@@ -148,17 +148,20 @@ bot.on('text', function (msg) {
                 console.log(err);
                 bot.sendMessage(messageChatId, 'Ой, что-то пошло не так. Повторите запрос');
             }
-
-            if (results[0].kind != 'youtube#video') {
-                let videoURL = 'https://youtu.be/' + results[1].id;
-                bot.sendMessage(messageChatId, videoURL);
-                console.log(videoQuery + ' ' + videoURL);
-                return;
+            for (i of results) {
+                /*            if (results[0].kind != 'youtube#video') {
+                                let videoURL = 'https://youtu.be/' + results[1].id;
+                                bot.sendMessage(messageChatId, videoURL);
+                                console.log('Request: ' + videoQuery + '. ' + 'Video title: ' + results[1].title);
+                                return;
+                            }*/
+                if (i.kind == 'youtube#video') {
+                    let videoURL = 'https://youtu.be/' + i.id;
+                    bot.sendMessage(messageChatId, videoURL);
+                    console.log('Request: ' + videoQuery + '. ' + 'Video title: ' + i.title);
+                    return;
+                }
             }
-
-            let videoURL = 'https://youtu.be/' + results[0].id;
-            bot.sendMessage(messageChatId, videoURL);
-            console.log(videoQuery + ' ' + videoURL);
         });
     }
 

@@ -5,7 +5,7 @@ var opts = {
   key: 'AIzaSyAPE06HkAar4Cj751xJ0nGsVUwhj_sOSaY'
 };
  
-search('ивлеева', opts, function(err, results) {
+search('как это работает', opts, function(err, results) {
   if(err) return console.log(err);
  
   console.dir(results);
