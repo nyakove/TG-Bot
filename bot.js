@@ -149,12 +149,6 @@ bot.on('text', function (msg) {
                 bot.sendMessage(messageChatId, 'Ой, что-то пошло не так. Повторите запрос');
             }
             for (i of results) {
-                /*            if (results[0].kind != 'youtube#video') {
-                                let videoURL = 'https://youtu.be/' + results[1].id;
-                                bot.sendMessage(messageChatId, videoURL);
-                                console.log('Request: ' + videoQuery + '. ' + 'Video title: ' + results[1].title);
-                                return;
-                            }*/
                 if (i.kind == 'youtube#video') {
                     let videoURL = 'https://youtu.be/' + i.id;
                     bot.sendMessage(messageChatId, videoURL);
